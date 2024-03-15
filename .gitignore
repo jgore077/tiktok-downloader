@@ -1,11 +1,4 @@
 node_modules/
-downloads/*
-crash_logs/*
+downloads
+crash_logs
 cookies.json
-index_old.js
-async_Test.js
-TikTokDownloader.db
-xpath.txt
-testing.js
-run.ps1
-testing.js
