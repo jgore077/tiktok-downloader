@@ -15,11 +15,11 @@ usage: index.js [-h] [-w] [-s] [--amount AMOUNT] (-f TXT | -m MASS | -u URL)
 ```
 
 <h2>Saving Your Cookies (Important!)</h2>
+You will need to run this command in order to run the program because it requires your cookies to be loaded.
 
 ```
 node cookieLoader.js
 ```
-
 After this you should go to TikTok login and after youve logged in press enter
 What this does is it saves your cookies so that when you run the bot on a mass download you dont get the sign-in popup
 
