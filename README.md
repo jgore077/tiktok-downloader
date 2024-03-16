@@ -16,6 +16,7 @@ usage: index.js [-h] [-w] [-s] [--amount AMOUNT] (-f TXT | -m MASS | -u URL)
 
 <h2>Saving Your Cookies (Important!)</h2>
 You will need to run this command in order to run the program because it requires your cookies to be loaded.
+
 ```
 node cookieLoader.js
 ```
