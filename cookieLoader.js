@@ -35,31 +35,3 @@ puppeteer.use(StealthPlugin());
 
 
 
-// (async () => {
-
-//     const readline = require('node:readline').createInterface({
-//         input: process.stdin,
-//         output: process.stdout,
-//       });
-
-//     const baseUrl="https://www.tiktok.com"
-//     const browser = await puppeteer.launch({
-//         headless: false,
-//     })
-//     const page = await browser.newPage()
-//     page.setUserAgent(
-//         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4182.0 Safari/537.36"
-//       );
-
- 
-//     await page.goto(baseUrl)
-    
-      
-//     readline.question(`Press enter button to save your cookies\n`, ()=> {
-//         readline.close();
-//         const cookies = page.cookies();
-//         fs.writeFileSync('./cookies2.json', JSON.stringify(cookies, null, 2));
-//         exit()
-//     });
-   
-// })();
