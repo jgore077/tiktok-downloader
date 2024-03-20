@@ -16,7 +16,7 @@ const {ArgumentParser} = require('argparse');
 const readline = require('readline');
 const moment = require('moment')
 const extrafs = require('fs-extra')
-// const { EOF } = require("dns");
+
 
 
 
@@ -30,7 +30,6 @@ parser.add_argument('-s', {action:'store_true',help:'Only does a single iteratio
 parser.add_argument('--full', {action:'store_true',help:'downloads everything and avoids skipping previously downloaded videos'});
 parser.add_argument('--amount', {help:'Specify number of videos to download',type:'int'});
 
-// -t txtfile -u url -m username  -w watermark included
 group=parser.add_mutually_exclusive_group({required:true})
 
 group.add_argument('-f', '--txt', { help: 'Download All Video URL\'s In A Text File' });
@@ -204,11 +203,7 @@ const getListVideoByUsername = async (username,snipe) => {
     })
     
     const page = await browser.newPage()
-    // Time without image blocking Time elapsed is          101881.39950000122 101.88 seconds
-    // Time with image blocking Time elapsed is             100231.26790000126 101.231 seconds
-    // Time with image,css & font blocking Time elapsed is  103028.19510000199
 
-    // || request.resourceType() === 'stylesheet' || request.resourceType()=='font'
     await page.setRequestInterception(true)
     page.on('request', (request) => {
     if (request.resourceType() === 'image') request.abort()
@@ -228,18 +223,16 @@ const getListVideoByUsername = async (username,snipe) => {
     const delay_after_load=1000
     const num_refreshes=10
     
-    //this loop refreshes the page num_refreshes times whilst trying to click a refresh button
-    // after the refresh button dissapears the code with throw an error leading into the catch block meaning that it has loaded
-    // the catch block will check if refresh button has dissapeared using truthy/fasly boolean checking
-    // if the element is still there it means a true crash happened and a log needs to be created
+
+    
     
     await page.keyboard.press('Escape')
-    // I made the code wait to load instead of constantly refreshing should save me some money!
+  
     try {
-        // await page.reload()
+
         await sleep(delay_milliseconds)
     
-        const xpathSelector = "//button[contains(text(),'Refresh')]"; // Replace with your XPath
+        const xpathSelector = "//button[contains(text(),'Refresh')]"; 
         await page.evaluate(xpath => {
             const xpathResult = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
             const element = xpathResult.singleNodeValue;
@@ -252,10 +245,9 @@ const getListVideoByUsername = async (username,snipe) => {
     } 
 
     catch (error) {
-            //the writelog code was here until I broke it down into a function
+            
             await writeLog("element_error",page,browser,error)
-            //await browser.close()
-        
+            
     }
     
 
@@ -283,9 +275,9 @@ return videoUrls2;
             
         });
         await page.evaluate("window.scrollTo(0, document.body.scrollHeight)").catch(() => {
-            // Just catching the error
+           
         })
-        // I may be able to consider a faster timeout due to images beings disabled                           
+                               
         await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`, {timeout: 10000})
         .catch(() => {
             console.log(chalk.red("[X] No more video found"));
@@ -330,7 +322,6 @@ const getIdVideo = (url) => {
 }
 
 const loadCookie = async (page) => {
-    //could be useful in future so ill keep it
     const cookieJson = await fs.readFileSync(path.join(__dirname,'cookies.json'));
     const cookies = JSON.parse(cookieJson);
     await page.setCookie(...cookies);
@@ -386,11 +377,10 @@ const filterListVideos= async (listVideos) => {
 
     const args =parser.parse_args()
     
-    // const choice = await getChoice();
     var listVideo = [];
-    //choice.choice === "Mass Download (Username)"
+
     if (args.mass) {
-        // const usernameInput = await getInput("Enter the username with @ (e.g. @username) : ");
+      
         
         const username = args.mass
         listVideo = await getListVideoByUsername(username,args.s);
@@ -400,8 +390,7 @@ const filterListVideos= async (listVideos) => {
         }
     } else if (args.txt) {
         var urls = [];
-        // Get URL from file
-        // const fileInput = await getInput("Enter the file path : ");
+      
         const file = args.txt;
 
         if(!fs.existsSync(path.join(__dirname,'crash_logs',file))) {
@@ -430,8 +419,7 @@ const filterListVideos= async (listVideos) => {
             listVideo.push(url);
         }
     } else {
-        // const urlInput = await getInput("Enter the URL : ");
-        //                  await getRedirectUrl(urlInput.input);
+
         const url = args.url
         listVideo.push(url);
     }
@@ -446,7 +434,7 @@ const filterListVideos= async (listVideos) => {
     
         console.log(chalk.green(`[*] Downloading video ${i+1} of ${listVideo.length}`));
         console.log(chalk.green(`[*] URL: ${listVideo[i]}`));
-        // choice.type == "With Watermark"
+
         var data = await getVideo(listVideo[i], (args.w));
         // Data will be null if an account is private but I am not sure how to overcome this
         // check if video was deleted => data empty
