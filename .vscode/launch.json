@@ -45,7 +45,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/index.js",
-            "args": ["-m","daniellarsonfree2024"]
+            "args": ["-m","daniellarsonhollywood24"]
             
 
         }

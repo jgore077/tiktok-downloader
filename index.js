@@ -377,7 +377,7 @@ const filterListVideos= async (listVideos) => {
     }
 
     listVideos =listVideos.map(video=>{
-        const videoId=getIdVideo(video)
+        const videoId= video.substr(video.lastIndexOf('/') + 1);
         if(!downloadedFiles[listVideos[0].match(/@([^\/]+)/)[0]].find(video=>video===videoId)){
             return video
         }
