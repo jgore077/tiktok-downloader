@@ -201,7 +201,6 @@ const getListVideoByUsername = async (username,snipe) => {
   
     const browser = await puppeteer.launch({
         headless: true,
-        args:['--no-sandbox']
         
     })
     
@@ -275,11 +274,6 @@ const getListVideoByUsername = async (username,snipe) => {
         const videoUrls2 = Array.from(listVideo).map(item => item.href)
             .filter(href => href.includes('/video/') || href.includes('/photo/'))
             .filter((value, index, self) => self.indexOf(value) === index).map(item=>item.replace('photo','video'));
-        // https://www.tiktok.com/@daniellarsonwork24/photo/7320008509586738478
-        // const slideShowUrls2 = Array.from(listVideo).map(item => item.href)
-        //     .filter(href => href.includes('/photo/'))
-        //     .filter((value, index, self) => self.indexOf(value) === index).map(item=>item.replace('photo','video'));
-//return videoUrls2.concat(slideShowUrls2);
 return videoUrls2;
         });
         if(snipe){
@@ -402,9 +396,7 @@ const filterListVideos= async (listVideos) => {
 
 
 (async () => {    
-    // let results=await writeVideoAndReadVideosFromDB('daniellarsonwork24','https://www.tiktok.com/@daniellarsonwork24/video/99921218319966153571536174')
-    // console.log(results)
-    // exit()
+    
     if(!fs.existsSync(path.join(__dirname,'downloads'))){
         fs.mkdirSync(path.join(__dirname,'downloads'))
     }
