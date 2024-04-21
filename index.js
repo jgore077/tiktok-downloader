@@ -149,7 +149,7 @@ const downloadMedia = async (item,username,skip) => {
 // url contains the url, watermark is a bool that tells us what link to use
 const getVideo = async (url, watermark) => {
     const idVideo = await getIdVideo(url)
-    const API_URL = `https://api16-normal-c-useast2a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
+    const API_URL = `https://api22-normal-c-alisg.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}&iid=7318518857994389254&device_id=7318517321748022790&channel=googleplay&app_name=musical_ly&version_code=300904&device_platform=android&device_type=ASUS_Z01QD&version=9`;
     const request = await fetch(API_URL, {
         method: "GET",
         headers : headers
@@ -157,7 +157,7 @@ const getVideo = async (url, watermark) => {
     const body = await request.text();
     try {
         var res = JSON.parse(body);
-    } catch (err) {
+    } catch (err) {   
         console.error("Error:", err);
         console.error("Response body:", body);
     }
@@ -200,6 +200,7 @@ const getListVideoByUsername = async (username,snipe) => {
   
     const browser = await puppeteer.launch({
         headless: true,
+        
     })
     
     const page = await browser.newPage()
@@ -310,16 +311,34 @@ const getRedirectUrl = async (url) => {
     return url;
 }
 
-const getIdVideo = (url) => {
-    const matching = url.includes("/video/")
-    if(!matching){
+const getIdVideo = async (url) => {
+    if (url.includes("/t/")) {
+        url = await new Promise((resolve) => {
+            require("follow-redirects").https.get(url, function (res) {
+                return resolve(res.responseUrl);
+            });
+        });
+    }
+    const matching = url.includes("/video/");
+    const matchingPhoto = url.includes("/photo/");
+    let idVideo = url.substring(
+        url.indexOf("/video/") + 7,
+        url.indexOf("/video/") + 26
+    );
+    if (matchingPhoto)
+        idVideo = url.substring(
+            url.indexOf("/photo/") + 7,
+            url.indexOf("/photo/") + 26
+        );
+    else if (!matching) {
         console.log(chalk.red("[X] Error: URL not found"));
         exit();
     }
     // Tiktok ID is usually 19 characters long and sits after /video/
-    let idVideo = url.substring(url.indexOf("/video/") + 7, url.indexOf("/video/") + 26);
-    return (idVideo.length > 19) ? idVideo.substring(0, idVideo.indexOf("?")) : idVideo;
-}
+    return idVideo.length > 19
+        ? idVideo.substring(0, idVideo.indexOf("?"))
+        : idVideo;
+};
 
 const loadCookie = async (page) => {
     const cookieJson = await fs.readFileSync(path.join(__dirname,'cookies.json'));
@@ -368,6 +387,7 @@ const filterListVideos= async (listVideos) => {
 
 
 (async () => {    
+    
     if(!fs.existsSync(path.join(__dirname,'downloads'))){
         fs.mkdirSync(path.join(__dirname,'downloads'))
     }
