@@ -87,7 +87,7 @@ const downloadMedia = async (item,username,skip) => {
     
     // check for slideshow
     if (item.images.length != 0) {
-        console.log(chalk.green("[*] Downloading Sildeshow"));
+        console.log(chalk.green("[*] Downloading Slideshow"));
         let index = 0;
         await item.images.forEach(image_url => {
             const fileName = `${item.id}_${index}.jpeg`;
