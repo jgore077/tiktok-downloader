@@ -21,7 +21,7 @@ You will need to run this command in order to run the program because it require
 node cookieLoader.js
 ```
 After this you should go to TikTok login and after youve logged in press enter
-What this does is it saves your cookies so that when you run the bot on a mass download you dont get the sign-in popup
+What this does is it saves your cookies so that when you run the bot on a mass download you dont get the sign-in popup and videos will actually load.
 
 
 <h2>Usage</h2>
